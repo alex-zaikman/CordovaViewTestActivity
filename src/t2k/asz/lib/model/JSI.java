@@ -5,9 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import t2k.asz.lib.model.util.CallBack;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
@@ -86,7 +88,7 @@ public class JSI {
 		
 	msg+=msg;	
 	}
-	
+
 	@JavascriptInterface
 	public void jsReturnVal(String msg, String d ,String rem){
 

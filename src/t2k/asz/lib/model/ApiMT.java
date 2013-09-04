@@ -12,6 +12,7 @@ import org.apache.cordova.api.CordovaInterface;
 import t2k.asz.lib.model.util.CallBack;
 import android.app.Activity;
 import android.util.Log;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
 
@@ -26,7 +27,6 @@ public class ApiMT  {
 	public ApiMT(String apiUrl, CallBack callbackOnLoadded, Activity activity){
 
 		final CallBack call = callbackOnLoadded;
-		
 		jsi = new JSI(NAME_SPASE);
 		
 		CDVFactory.config.activity=activity;
@@ -47,6 +47,7 @@ public class ApiMT  {
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
+				CookieSyncManager.getInstance().sync();
 				Log.d("JSI" , "onPageFinished loadded:"+url);
 				if( first ){
 					first = false;

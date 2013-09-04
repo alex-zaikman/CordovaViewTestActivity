@@ -5,10 +5,25 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cordova.api.LOG;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.protocol.BasicHttpContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +41,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -35,12 +51,11 @@ import t2k.asz.lib.model.util.*;
 public class ClassesActivity extends Activity {
 
 
-	 
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_classes);
-	        
+	       
 	        
 	        final LinearLayout myGallery = (LinearLayout)findViewById(R.id.classgallery);
 	        ///get classes ---getStudyClassesOnSuccess
@@ -48,7 +63,7 @@ public class ClassesActivity extends Activity {
 	        	
 	        
 				@Override
-	        	public void call(String msg){
+	        	public void call(String msg) {
 	        		
 
 					JSONArray jObj;
@@ -68,25 +83,59 @@ public class ClassesActivity extends Activity {
 	    	        	String imageUrl = (String) aclass.get("imageURL");
 	    	        	
 	    	        	
-	    	         	 DataModle.the().cdv.getImage(imageUrl, new CallBack(){
-	    	        		 
-	    	        		 @Override
-	    	        		 public void call(String msg){
-	    	        			 
-	    	        			 
-	    	        			msg = msg+"";
-	    	        			
-								//Bitmap image = BitmapFactory.decodeStream(new ByteArrayInputStream(msg.getBytes()));
-	    	        			
-	    	        			byte[] decodedString = Base64.decode(msg, Base64.DEFAULT);
-	    	        			Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-	    	        		//	 myGallery.addView(insertPhoto(image));
-	    	        			 
-	    	        			 
-	    	        		 }
-	    	        		 
-	    	        		 
-	    	        	 },  new CallBack(){});
+	    	        	
+	    	        	 
+						try {
+							
+							URL url = new URL("http://cto.timetoknow.com/"+imageUrl);
+							
+
+							    
+				                final String cookie = CookieManager.getInstance().getCookie("http://cto.timetoknow.com");
+				              
+				        
+				                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+					            connection.setDoInput(true);
+					            connection.setInstanceFollowRedirects(true);
+					            connection.connect();	  
+					            int code =  connection.getResponseCode();
+					            InputStream input = connection.getInputStream();
+					            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+				                
+				                
+					            LOG.d("asz",""+code);
+					            
+//							DefaultHttpClient httpclient = new DefaultHttpClient();
+//							HttpGet httpget = new HttpGet(url.toURI());
+//							 HttpResponse httpResponse = httpclient.execute(httpget);
+//							 
+//							 
+//							 StatusLine res = httpResponse.getStatusLine();
+//							String r = res.toString();
+//							LOG.d("asz",r);
+//							
+//							HttpEntity entity = httpResponse.getEntity();
+//							InputStream is = entity.getContent();
+//							Bitmap myBitmap = BitmapFactory.decodeStream(is);
+//							
+//							LOG.d("asz","");
+							
+//						   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+					
+			               // DataModle.the().cdv.getWebView().
+			                
+			                
+			                
+						  // connection.setco
+							
+							
+							
+							
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+	    	        	   
 	    	        	
 	    	        	
 	    	        	//Bitmap image = getBitmapFromURL(imageUrl) ;

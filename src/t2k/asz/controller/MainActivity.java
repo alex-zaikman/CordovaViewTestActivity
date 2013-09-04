@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -28,6 +29,9 @@ import android.widget.EditText;
 public class MainActivity extends Activity implements CordovaInterface{
 
 
+
+	
+	
 	public final String NAME_SPASE = "ASZNSP";
 
 	
@@ -38,6 +42,7 @@ public class MainActivity extends Activity implements CordovaInterface{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		 CookieSyncManager.createInstance(this);
 		setContentView(R.layout.activity_main);
 
 
@@ -147,6 +152,7 @@ public class MainActivity extends Activity implements CordovaInterface{
 	@Override
 	protected void onResume() {
 		super.onResume();
+		CookieSyncManager.getInstance().startSync();
 		Log.d(TAG, "onResume");
 	}
 
