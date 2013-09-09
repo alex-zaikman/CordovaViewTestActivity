@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import t2k.asz.lib.model.ApiMT;
 import t2k.asz.lib.model.util.CallBack;
 import t2k.asz.lib.model.util.JsonHelper;
+//import t2k.asz.lib.model.util.WebkitCookieManagerProxy;
 import t2k.asz.modle.DataModle;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,7 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.CookieSyncManager;
+//import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -42,11 +43,20 @@ public class MainActivity extends Activity implements CordovaInterface{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 CookieSyncManager.createInstance(this);
+	
 		setContentView(R.layout.activity_main);
 
+		DataModle.the();
+      //  android.webkit.CookieSyncManager.createInstance(this);
+     // unrelated, just make sure cookies are generally allowed
+   //  android.webkit.CookieManager.getInstance().setAcceptCookie(true);
 
-		DataModle.the().cdv = new ApiMT("http://cto.timetoknow.com/lms/js/libs/t2k/t2ka.html", new CallBack(){
+     // magic starts here
+    // WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, java.net.CookiePolicy.ACCEPT_ALL);
+    // java.net.CookieHandler.setDefault(coreCookieManager);
+     
+
+		DataModle.the().cdv = new ApiMT("http://cto.timetoknow.com/lms/js/libs/t2k/t2ka.jsp", new CallBack(){
 
 			@Override
 			public void call(String msg){
@@ -152,7 +162,7 @@ public class MainActivity extends Activity implements CordovaInterface{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		CookieSyncManager.getInstance().startSync();
+	//	CookieSyncManager.getInstance().startSync();
 		Log.d(TAG, "onResume");
 	}
 

@@ -81,6 +81,7 @@ public class JSI {
 
 	}
 
+	
 
 	//============================================================================
 	@JavascriptInterface
@@ -89,6 +90,8 @@ public class JSI {
 	msg+=msg;	
 	}
 
+
+	
 	@JavascriptInterface
 	public void jsReturnVal(String msg, String d ,String rem){
 

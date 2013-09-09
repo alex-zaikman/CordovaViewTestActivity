@@ -9,13 +9,17 @@
     tools:context=".ClassesActivity" >
 
 
-        <LinearLayout
-            android:id="@+id/classgallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            />
-        
+
+        <GridView 
+    android:id="@+id/classgallery"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:numColumns="auto_fit"
+    android:verticalSpacing="10dp"
+    android:horizontalSpacing="10dp"
+    android:stretchMode="columnWidth"
+    android:gravity="center"
+/>
         
     </HorizontalScrollView>
 

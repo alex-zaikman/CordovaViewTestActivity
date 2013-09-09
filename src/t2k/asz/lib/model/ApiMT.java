@@ -12,11 +12,11 @@ import org.apache.cordova.api.CordovaInterface;
 import t2k.asz.lib.model.util.CallBack;
 import android.app.Activity;
 import android.util.Log;
-import android.webkit.CookieSyncManager;
+//import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
 
-
+ 
 public class ApiMT  {
 
 	private JSI jsi=null;
@@ -34,12 +34,7 @@ public class ApiMT  {
 		CDVFactory.config.javascriptInterface = jsi;
 		CDVFactory.config.nameSpace = NAME_SPASE;
 		
-		
-		
 		webview=CDVFactory.the().cwv;
-		
-		
-		
 		
 		CordovaWebViewClient client =new IceCreamCordovaWebViewClient((CordovaInterface) CDVFactory.config.activity,webview){
 
@@ -47,9 +42,10 @@ public class ApiMT  {
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
-				CookieSyncManager.getInstance().sync();
+				
 				Log.d("JSI" , "onPageFinished loadded:"+url);
 				if( first ){
+					//CookieSyncManager.getInstance().sync();
 					first = false;
 					call.call("AOK");
 				}
@@ -58,9 +54,7 @@ public class ApiMT  {
 
 		webview.setWebViewClient(client);
 		
-		
 		jsi.setWebview(webview);
-		
 	}
 
 	public WebView getWebView(){
@@ -71,10 +65,9 @@ public class ApiMT  {
 
 	
 	
-	public void getImage(String url , CallBack success,CallBack faliure){
-		List<String> params= new ArrayList<String>();
-		params.add(comma(url));
-		jsi.execJS("getImage", params, success, faliure);
+	public void getCookie(CallBack success,CallBack faliure){
+		
+		jsi.execJS("getCookie", null, success, faliure);
 	}
 	
 	

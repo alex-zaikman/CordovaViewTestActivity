@@ -5,5 +5,5 @@ public abstract class CallBack {
 	public void call(String msg){
 		
 	}
-	
+
 }
