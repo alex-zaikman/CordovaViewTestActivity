@@ -29,7 +29,7 @@ import android.widget.ImageView;
 
 public class ClassesActivity extends Activity {
 
-	private List<Bitmap> mimages =new ArrayList<Bitmap>();
+	
 
 
 	@Override
@@ -37,120 +37,18 @@ public class ClassesActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_classes);
 		final GridView myGallery = (GridView)findViewById(R.id.classgallery);
-		final ImageAdapter adupt = new ImageAdapter(this,mimages);
-
-		__init(new CallBack(){
-
-			@Override
-			public void call(String msg){
-
-				myGallery.setAdapter(adupt);
-				myGallery.invalidate();
-			}
-
-		});
-
-
-
-	}
-
-	private void __init(CallBack ca){
+		final ImageAdapter adupt = new ImageAdapter(this,(List<Bitmap>) DataModle.the().ldata);
 
 		
 
-		DataModle.the().cdv.getCookie( new CallBack(){
+				myGallery.setAdapter(adupt);
+				myGallery.invalidate();
+			
 
-			@Override
-			public void call(String msg){
-				
-				
-		///get classes ---getStudyClassesOnSuccess
-		DataModle.the().cdv.getStudyClasses(new CallBack(){
+		
 
 
 
-			@Override
-			public void call(String msg) {
-
-
-				JSONArray jObj;
-				try {
-					jObj = new JSONArray(msg);
-
-					List<?> jList =JsonHelper.toList(jObj);
-
-					DataModle.the().ldata =jList; 
-					//get class images
-					Map<String,Object> aclass;
-					int size = jList.size();
-					int i=0;
-					for(Object a : jList){
-
-
-						aclass = (Map<String, Object>) a;
-
-						String imageUrl = (String) aclass.get("imageURL");
-
-
-						try {
-
-
-
-							final URL url = new URL("http://cto.timetoknow.com/"+imageUrl);
-
-							
-
-
-									try {
-										HttpURLConnection connection;
-										connection = (HttpURLConnection) url.openConnection();
-										connection.setRequestProperty("Cookie", msg);
-										connection.setDoInput(true);
-										connection.connect();	  
-
-										int code =  connection.getResponseCode();
-										LOG.d("asz",""+code);
-
-										InputStream input = connection.getInputStream();
-
-										Bitmap myBitmap = BitmapFactory.decodeStream(input);
-										mimages.add(myBitmap);
-
-										
-
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									} 
-								
-
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-
-					}
-
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-
-		}, new CallBack(){});
-
-
-			}
-
-		}, new CallBack(){
-
-			@Override
-			public void call(String msg){
-				LOG.d("asz",""+msg);
-			}
-
-		});   	
-							
 	}
 
 

@@ -1,5 +1,11 @@
 package t2k.asz.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -7,22 +13,24 @@ import java.util.concurrent.Executors;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.api.CordovaInterface;
 import org.apache.cordova.api.CordovaPlugin;
+import org.apache.cordova.api.LOG;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import t2k.asz.lib.model.ApiMT;
 import t2k.asz.lib.model.util.CallBack;
 import t2k.asz.lib.model.util.JsonHelper;
-//import t2k.asz.lib.model.util.WebkitCookieManagerProxy;
 import t2k.asz.modle.DataModle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-//import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -34,7 +42,7 @@ public class MainActivity extends Activity implements CordovaInterface{
 	
 	 
 	public final String NAME_SPASE = "ASZNSP";
-
+	private List<Bitmap> mimages =new ArrayList<Bitmap>();
 	
 	private String TAG = "ASZ_CORDOVA_ACTIVITY";
 	private String T2K = "ASZ_T2K_API";
@@ -45,16 +53,6 @@ public class MainActivity extends Activity implements CordovaInterface{
 		super.onCreate(savedInstanceState);
 	
 		setContentView(R.layout.activity_main);
-
-		DataModle.the();
-      //  android.webkit.CookieSyncManager.createInstance(this);
-     // unrelated, just make sure cookies are generally allowed
-   //  android.webkit.CookieManager.getInstance().setAcceptCookie(true);
-
-     // magic starts here
-    // WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, java.net.CookiePolicy.ACCEPT_ALL);
-    // java.net.CookieHandler.setDefault(coreCookieManager);
-     
 
 		DataModle.the().cdv = new ApiMT("http://cto.timetoknow.com/lms/js/libs/t2k/t2ka.jsp", new CallBack(){
 
@@ -104,11 +102,105 @@ public class MainActivity extends Activity implements CordovaInterface{
 
 							DataModle.the().mdata = jmap;
 							
-						   
+							{
+
+								
+
+								DataModle.the().cdv.getCookie( new CallBack(){
+
+									@Override
+									public void call(String msg){
+										
+										
+								///get classes ---getStudyClassesOnSuccess
+								DataModle.the().cdv.getStudyClasses(new CallBack(){
+
+
+
+									@Override
+									public void call(String msg) {
+
+
+										JSONArray jObj;
+										try {
+											jObj = new JSONArray(msg);
+
+											List<?> jList =JsonHelper.toList(jObj);
+
+											DataModle.the().ldata =jList; 
+											//get class images
+											Map<String,Object> aclass;
+											int size = jList.size();
+											int i=0;
+											for(Object a : jList){
+
+
+												aclass = (Map<String, Object>) a;
+
+												String imageUrl = (String) aclass.get("imageURL");
+
+
+												try {
+
+
+
+													final URL url = new URL("http://cto.timetoknow.com/"+imageUrl);
+
+													
+
+
+															try {
+																HttpURLConnection connection;
+																connection = (HttpURLConnection) url.openConnection();
+																connection.setRequestProperty("Cookie", msg);
+																connection.setDoInput(true);
+																connection.connect();	  
+
+																int code =  connection.getResponseCode();
+																LOG.d("asz",""+code);
+
+																InputStream input = connection.getInputStream();
+
+																Bitmap myBitmap = BitmapFactory.decodeStream(input);
+																mimages.add(myBitmap);
+																i++;
+																
+																if(i==size){
+																	
+																	DataModle.the().ldata = mimages;
+																	
+																	Intent intent = new Intent(getApplicationContext(), ClassesActivity.class);
+																	
+																    startActivity(intent);
+																
+																}				
+
+															} catch (IOException e) {
+																e.printStackTrace();
+															} 
+														
+												} catch (Exception e) {
+													e.printStackTrace();
+												}
+											}
+										} catch (JSONException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+
+									}
+
+								}, new CallBack(){});
+									}
+								}, new CallBack(){
+									@Override
+									public void call(String msg){
+										LOG.d("asz",""+msg);
+									}
+								});   					
+							}
 							
-							Intent intent = new Intent(getApplicationContext(), ClassesActivity.class);
-						
-						    startActivity(intent);
+
 
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -162,7 +254,6 @@ public class MainActivity extends Activity implements CordovaInterface{
 	@Override
 	protected void onResume() {
 		super.onResume();
-	//	CookieSyncManager.getInstance().startSync();
 		Log.d(TAG, "onResume");
 	}
 
