@@ -12,14 +12,13 @@
 
         <GridView 
     android:id="@+id/classgallery"
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:numColumns="3"
     android:verticalSpacing="10dp"
     android:horizontalSpacing="10dp"
-    android:stretchMode="columnWidth"
     android:gravity="center"
-/>
+   />
         
     </HorizontalScrollView>
 

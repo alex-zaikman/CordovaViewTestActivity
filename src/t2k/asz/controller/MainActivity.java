@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -42,7 +43,6 @@ public class MainActivity extends Activity implements CordovaInterface{
 	
 	 
 	public final String NAME_SPASE = "ASZNSP";
-	private List<Bitmap> mimages =new ArrayList<Bitmap>();
 	
 	private String TAG = "ASZ_CORDOVA_ACTIVITY";
 	private String T2K = "ASZ_T2K_API";
@@ -110,7 +110,7 @@ public class MainActivity extends Activity implements CordovaInterface{
 
 									@Override
 									public void call(String msg){
-										
+										final String cookie = msg;
 										
 								///get classes ---getStudyClassesOnSuccess
 								DataModle.the().cdv.getStudyClasses(new CallBack(){
@@ -132,27 +132,21 @@ public class MainActivity extends Activity implements CordovaInterface{
 											Map<String,Object> aclass;
 											int size = jList.size();
 											int i=0;
+											DataModle.the().rawList = new LinkedList<Object>();
 											for(Object a : jList){
-
 
 												aclass = (Map<String, Object>) a;
 
 												String imageUrl = (String) aclass.get("imageURL");
 
-
 												try {
 
-
-
 													final URL url = new URL("http://cto.timetoknow.com/"+imageUrl);
-
-													
-
 
 															try {
 																HttpURLConnection connection;
 																connection = (HttpURLConnection) url.openConnection();
-																connection.setRequestProperty("Cookie", msg);
+																connection.setRequestProperty("Cookie", cookie);
 																connection.setDoInput(true);
 																connection.connect();	  
 
@@ -162,12 +156,11 @@ public class MainActivity extends Activity implements CordovaInterface{
 																InputStream input = connection.getInputStream();
 
 																Bitmap myBitmap = BitmapFactory.decodeStream(input);
-																mimages.add(myBitmap);
+																DataModle.the().rawList.add(myBitmap);
 																i++;
 																
 																if(i==size){
 																	
-																	DataModle.the().ldata = mimages;
 																	
 																	Intent intent = new Intent(getApplicationContext(), ClassesActivity.class);
 																	

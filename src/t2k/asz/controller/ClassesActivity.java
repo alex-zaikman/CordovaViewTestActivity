@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -29,7 +30,7 @@ import android.widget.ImageView;
 
 public class ClassesActivity extends Activity {
 
-	
+
 
 
 	@Override
@@ -38,16 +39,9 @@ public class ClassesActivity extends Activity {
 		setContentView(R.layout.activity_classes);
 		final GridView myGallery = (GridView)findViewById(R.id.classgallery);
 		final ImageAdapter adupt = new ImageAdapter(this,(List<Bitmap>) DataModle.the().ldata);
-
 		
-
-				myGallery.setAdapter(adupt);
-				myGallery.invalidate();
-			
-
+		myGallery.setAdapter(adupt);
 		
-
-
 
 	}
 
@@ -64,8 +58,9 @@ public class ClassesActivity extends Activity {
 			this.mThumbIds =mThumbId;
 		}
 
-		public int getCount() {     
-			return mThumbIds.size();
+		public int getCount() {  
+			int ret =mThumbIds.size();
+			return ret;
 		}
 
 		public Object getItem(int position) {
@@ -77,18 +72,19 @@ public class ClassesActivity extends Activity {
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ImageView imageView;
-			if (convertView == null) {  // if it's not recycled, initialize some attributes
-				imageView = new ImageView(mContext);
-				imageView.setLayoutParams(new GridView.LayoutParams(220, 220));
-				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				imageView.setPadding(8, 8, 8, 8);
-			} else {
-				imageView = (ImageView) convertView;
-			}
+			
+			ImageView view;
+			
+			LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			view = (ImageView) mInflater.inflate(R.layout.class_cell, parent, false);
+			 
+			view.setLayoutParams(new GridView.LayoutParams(220, 220));
+			view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			view.setPadding(8, 8, 8, 8);
 
-			imageView.setImageBitmap(mThumbIds.get(position));
-			return imageView;
+			view.setImageBitmap(mThumbIds.get(position));
+			return view;
 		}
 
 

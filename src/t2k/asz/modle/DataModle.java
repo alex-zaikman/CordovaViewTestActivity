@@ -14,6 +14,7 @@ public class DataModle {
 	public Map<String,Object> mdata;
 	public List<?> ldata;
 	public Object raw;
+	public List<Object> rawList;
 	
 	private DataModle(){
 	
