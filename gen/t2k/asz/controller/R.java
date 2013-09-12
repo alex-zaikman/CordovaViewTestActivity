@@ -41,11 +41,13 @@ public final class R {
     public static final class layout {
         public static final int activity_classes=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int class_cell=0x7f030002;
+        public static final int activity_overview=0x7f030002;
+        public static final int class_cell=0x7f030003;
     }
     public static final class menu {
         public static final int classes=0x7f070000;
         public static final int main=0x7f070001;
+        public static final int overview=0x7f070002;
     }
     public static final class string {
         public static final int action_settings=0x7f060002;
@@ -54,6 +56,7 @@ public final class R {
         public static final int loginbtn=0x7f060004;
         public static final int title_activity_classes=0x7f060005;
         public static final int title_activity_main=0x7f060001;
+        public static final int title_activity_overview=0x7f060006;
     }
     public static final class xml {
         public static final int config=0x7f040000;
