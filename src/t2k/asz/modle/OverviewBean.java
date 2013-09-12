@@ -41,18 +41,52 @@ public class OverviewBean {
 
 		root.setCid( (String) toc .get("cid"));
 
-		 parceStructure(this.root, toc);
+		parceStructure(this.root, toc);
 	}
 
-	private void parceStructure(Item root ,  Map<String, Object> toc){
-
-		//TODO
+	private void parceStructure(Item root ,  Map<String, Object> data){
 
 	
+		List<Map<String, Object>> tocItems = (List<Map<String, Object>>) data.get("tocItems");
+
+		for (Map<String, Object>  tocitem : tocItems){
+
+			Item node = new Item();
+
+			node.setTitle((String) tocitem.get("title"));
+
+			node.setOverview((String)tocitem.get("overview"));
+
+			node.setCid((String)tocitem.get("cid"));
+
+			root.addChiled(node);
+
+			parceStructure(node, tocitem);
+
+		}
+
+
+		List<Map<String, Object>> items = (List<Map<String, Object>>) data.get("items");
+
+		for (Map<String, Object>  item : items){
+
+
+			Item node = new Item();
+
+			node.setTitle((String) item.get("title"));
+
+			node.setOverview((String)item.get("description"));
+
+			node.setCid((String)item.get("cid"));
+
+			root.addChiled(node);
+
+		}
+
 
 	}
-	
-	
+
+
 	public List<Item> listExpanddedItemsByDFS(){
 		List<Item> ret = new  LinkedList<Item>();
 		listExpanddedItemsByDFS( this.root ,ret);
@@ -90,7 +124,9 @@ public class OverviewBean {
 			children = new LinkedList<Item>();
 		}
 
-
+		public void addChiled(Item chiled){
+			this.children.add(chiled);
+		}
 		public String getCid() {
 			return cid;
 		}
