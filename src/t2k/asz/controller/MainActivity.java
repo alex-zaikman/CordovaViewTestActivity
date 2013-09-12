@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements CordovaInterface{
 
 
 	
-	
+	 
 	public final String NAME_SPASE = "ASZNSP";
 
 	
