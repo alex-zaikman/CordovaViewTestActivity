@@ -13,6 +13,7 @@ public class DataModle {
 	
 	public Map<String,Object> mdata;
 	public List<?> ldata;
+	public Object raw;
 	
 	private DataModle(){
 	
