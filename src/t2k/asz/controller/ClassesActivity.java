@@ -56,8 +56,14 @@ public class ClassesActivity extends Activity {
 
 	private void __init(CallBack ca){
 
-		final CallBack caa=ca;
 		
+
+		DataModle.the().cdv.getCookie( new CallBack(){
+
+			@Override
+			public void call(String msg){
+				
+				
 		///get classes ---getStudyClassesOnSuccess
 		DataModle.the().cdv.getStudyClasses(new CallBack(){
 
@@ -92,10 +98,7 @@ public class ClassesActivity extends Activity {
 
 							final URL url = new URL("http://cto.timetoknow.com/"+imageUrl);
 
-							DataModle.the().cdv.getCookie( new CallBack(){
-
-								@Override
-								public void call(String msg){
+							
 
 
 									try {
@@ -113,31 +116,18 @@ public class ClassesActivity extends Activity {
 										Bitmap myBitmap = BitmapFactory.decodeStream(input);
 										mimages.add(myBitmap);
 
+										
 
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									} 
-								}
-
-							}, new CallBack(){
-
-								@Override
-								public void call(String msg){
-									LOG.d("asz",""+msg);
-								}
-
-							});   		
+								
 
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 
-						
-						if(i==size-1){
-							caa.call("");
-						}
-						i++;
 					}
 
 				} catch (JSONException e) {
@@ -150,6 +140,17 @@ public class ClassesActivity extends Activity {
 		}, new CallBack(){});
 
 
+			}
+
+		}, new CallBack(){
+
+			@Override
+			public void call(String msg){
+				LOG.d("asz",""+msg);
+			}
+
+		});   	
+							
 	}
 
 
