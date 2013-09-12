@@ -83,7 +83,11 @@ public class ClassesActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					
-					int r = id+1;
+					int classId = id+1;
+					
+					
+					
+					
 					
 				}
 				
