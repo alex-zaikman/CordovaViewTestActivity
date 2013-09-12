@@ -38,7 +38,7 @@ public class ClassesActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_classes);
 		final GridView myGallery = (GridView)findViewById(R.id.classgallery);
-		final ImageAdapter adupt = new ImageAdapter(this,(List<Bitmap>) DataModle.the().ldata);
+		final ImageAdapter adupt = new ImageAdapter(this,(List<Bitmap>) DataModle.the().rawList);
 		
 		myGallery.setAdapter(adupt);
 		
