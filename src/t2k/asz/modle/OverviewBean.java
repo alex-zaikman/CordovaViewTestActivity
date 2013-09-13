@@ -13,7 +13,7 @@ public class OverviewBean {
 	private String title;
 	private String overview;
 	private String cid;
-
+	
 	private Item root;
 
 
@@ -28,6 +28,9 @@ public class OverviewBean {
 
 		this.setTitle((String) data.get("title"));
 
+		this.setCid((String) data.get("cid"));
+
+		
 		@SuppressWarnings("unchecked")
 		Map<String, Object> toc = (Map<String, Object>) data.get("toc");
 
@@ -39,7 +42,7 @@ public class OverviewBean {
 
 		root.setOverview((String) toc .get("overview"));
 
-		root.setCid( (String) toc .get("cid"));
+		root.setCid( (String) toc.get("cid"));
 
 		root.setLeaf(false);
 		
