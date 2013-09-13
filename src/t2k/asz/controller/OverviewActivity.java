@@ -87,8 +87,8 @@ public class OverviewActivity extends Activity {
 		        
 		        if(row == null)
 		        {
-		            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-		            row = (TextView) inflater.inflate(layoutResourceId, parent, false);
+		            row = (TextView) LayoutInflater.from(context)
+		                    .inflate(R.layout.table_row_simple, parent, false);
 		        }
 		       Item item = (Item) getItem(position);
 		        row.setText(item.getTitle());

@@ -59,6 +59,8 @@ public class OverviewBean {
 
 			node.setCid((String)tocitem.get("cid"));
 
+			node.setLeaf(true);
+			
 			root.addChiled(node);
 
 			parceStructure(node, tocitem);
@@ -79,6 +81,8 @@ public class OverviewBean {
 
 			node.setCid((String)item.get("cid"));
 
+			node.setLeaf(false);
+			
 			root.addChiled(node);
 
 		}
