@@ -41,6 +41,10 @@ public class OverviewBean {
 
 		root.setCid( (String) toc .get("cid"));
 
+		root.setLeaf(false);
+		
+		root.setExpandded(true);
+		
 		parceStructure(this.root, toc);
 	}
 
@@ -59,7 +63,9 @@ public class OverviewBean {
 
 			node.setCid((String)tocitem.get("cid"));
 
-			node.setLeaf(true);
+			node.setLeaf(false);
+			
+			node.setExpandded(true);
 			
 			root.addChiled(node);
 
@@ -81,7 +87,9 @@ public class OverviewBean {
 
 			node.setCid((String)item.get("cid"));
 
-			node.setLeaf(false);
+			node.setLeaf(true);
+			
+			node.setExpandded(true);
 			
 			root.addChiled(node);
 
@@ -100,11 +108,11 @@ public class OverviewBean {
 	private void listExpanddedItemsByDFS( Item node ,List<Item> list){
 		if(node.isExpandded()){
 			list.add(node);
-			if(!node.isLeaf()){
+			//if(!node.isLeaf()){
 				for(Item chiled : node.getChildren()){
 					listExpanddedItemsByDFS( chiled ,list);
 				}
-			}
+		//	}
 		}
 	}
 
