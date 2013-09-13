@@ -99,7 +99,7 @@ public class ClassesActivity extends Activity {
 								
 								JSONObject json = new JSONObject(msg);
 								DataModle.the().mdata =JsonHelper.toMap(json);  
-								Intent intent = new Intent(getApplicationContext(), ClassesActivity.class);
+								Intent intent = new Intent(getApplicationContext(), OverviewActivity.class);
 								intent.putExtra("classId",classId);
 								startActivity(intent);
 
