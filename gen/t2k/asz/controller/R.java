@@ -27,14 +27,16 @@ public final class R {
         public static final int sandy=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f080009;
+        public static final int action_settings=0x7f08000b;
         public static final int btnDo=0x7f080007;
-        public static final int classcell=0x7f080008;
+        public static final int classcell=0x7f080009;
         public static final int classgallery=0x7f080000;
+        public static final int list=0x7f080008;
         public static final int password=0x7f080006;
         public static final int passwordLayout=0x7f080004;
         public static final int textView1=0x7f080002;
         public static final int textView2=0x7f080005;
+        public static final int txtRow=0x7f08000a;
         public static final int userLayout=0x7f080001;
         public static final int userName=0x7f080003;
     }
@@ -43,6 +45,7 @@ public final class R {
         public static final int activity_main=0x7f030001;
         public static final int activity_overview=0x7f030002;
         public static final int class_cell=0x7f030003;
+        public static final int table_row_simple=0x7f030004;
     }
     public static final class menu {
         public static final int classes=0x7f070000;
