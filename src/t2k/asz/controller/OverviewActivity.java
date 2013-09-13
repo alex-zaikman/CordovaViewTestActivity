@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -87,12 +88,15 @@ public class OverviewActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
+			
+			
 			TextView row = (TextView) LayoutInflater.from(context)
 					.inflate(R.layout.table_row_simple, parent, false);
 
 			final Item item = (Item) getItem(position);
 			row.setText(item.getTitle());
 
+			
 
 			if(!item.isLeaf()){
 				row.setBackgroundColor(Color.BLUE);
@@ -102,6 +106,8 @@ public class OverviewActivity extends Activity {
 
 					@Override
 					public void onClick(View v) {
+					
+						v.setBackgroundColor(Color.CYAN);
 						String selectedNodeCid = item.getCid();
 						String courseId = ob.getCourseId();
 						String dataCid = ob.getCid();
