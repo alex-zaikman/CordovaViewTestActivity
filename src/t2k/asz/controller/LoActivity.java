@@ -59,6 +59,7 @@ public class LoActivity extends Activity {
 
 
 		seqList = new ArrayList<Seq>();
+		@SuppressWarnings("unchecked")
 		final List<Object> learningObjects = (List<Object>) ((Map<String, Object>)rdata.get("data")).get("learningObjects");
 
 		this.los = new ArrayList<Lo>();
@@ -68,6 +69,7 @@ public class LoActivity extends Activity {
 		lv.setAdapter(new LoAdapter(this,R.id.txtRow , this.seqList));
 	}
 
+	@SuppressWarnings("unchecked")
 	private void prepLos(List<Object> learningObjects) {
 		this.los.clear();
 

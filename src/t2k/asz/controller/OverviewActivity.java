@@ -112,12 +112,12 @@ public class OverviewActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 
-						v.setBackgroundColor(Color.CYAN);
+					//	v.setBackgroundColor(Color.CYAN);
 
 						final String lessonId = item.getCid();
 						final String courseId = ob.getCourseId();
 						final String Ccid = ob.getCid();
-
+					
 						DataModle.the().cdv.getLessonContent(courseId, lessonId, new CallBack(){
 							@Override
 							public void call(String msg) {
@@ -132,7 +132,12 @@ public class OverviewActivity extends Activity {
 									context.startActivity(intent);
 
 							}					
-						}, new CallBack(){ @Override public void call(String msg){}});
+						}, new CallBack(){ @Override public void call(String msg){
+							
+							
+							LOG.d("asz",msg);
+							
+						}});
 
 						LOG.d("asz","selectedNodeCid: "+ lessonId +" courseId: "+courseId +" dataCid: "+Ccid   );
 
