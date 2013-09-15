@@ -1,13 +1,18 @@
 package t2k.asz.controller;
 
 import org.apache.cordova.api.LOG;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import t2k.asz.lib.model.util.CallBack;
+import t2k.asz.lib.model.util.JsonHelper;
 import t2k.asz.modle.DataModle;
 import t2k.asz.modle.OverviewBean;
 import t2k.asz.modle.OverviewBean.Item;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -88,15 +93,15 @@ public class OverviewActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			
-			
+
+
 			TextView row = (TextView) LayoutInflater.from(context)
 					.inflate(R.layout.table_row_simple, parent, false);
 
 			final Item item = (Item) getItem(position);
 			row.setText(item.getTitle());
 
-			
+
 
 			if(!item.isLeaf()){
 				row.setBackgroundColor(Color.BLUE);
@@ -106,13 +111,30 @@ public class OverviewActivity extends Activity {
 
 					@Override
 					public void onClick(View v) {
-					
+
 						v.setBackgroundColor(Color.CYAN);
-						String selectedNodeCid = item.getCid();
-						String courseId = ob.getCourseId();
-						String dataCid = ob.getCid();
-						
-						LOG.d("asz","selectedNodeCid: "+ selectedNodeCid +" courseId: "+courseId +" dataCid: "+dataCid   );
+
+						final String lessonId = item.getCid();
+						final String courseId = ob.getCourseId();
+						final String Ccid = ob.getCid();
+
+						DataModle.the().cdv.getLessonContent(courseId, lessonId, new CallBack(){
+							@Override
+							public void call(String msg) {
+								
+									Intent intent = new Intent(context.getApplicationContext(), LoActivity.class);
+									
+									intent.putExtra("lessonId", lessonId);
+									intent.putExtra("courseId", courseId);
+									intent.putExtra("Ccid", Ccid);
+									intent.putExtra("rawData", msg);
+									
+									context.startActivity(intent);
+
+							}					
+						}, new CallBack(){ @Override public void call(String msg){}});
+
+						LOG.d("asz","selectedNodeCid: "+ lessonId +" courseId: "+courseId +" dataCid: "+Ccid   );
 
 					}
 

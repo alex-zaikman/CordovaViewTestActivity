@@ -89,7 +89,7 @@ public class ClassesActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 
-					final Integer classId = id+1;
+					final int classId = id+1;
 
 					DataModle.the().cdv.getCourse(classId+"", new CallBack(){
 						@Override
