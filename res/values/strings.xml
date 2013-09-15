@@ -8,5 +8,6 @@
     <string name="loginbtn">Log In</string>
     <string name="title_activity_classes">ClassesActivity</string>
     <string name="title_activity_overview">OverviewActivity</string>
+    <string name="title_activity_lo">LoActivity</string>
 
 </resources>
