@@ -111,54 +111,6 @@ public class JSI {
 	}
 
 	
-	@JavascriptInterface
-	public void openMyDb(){
-		
-
-		String myPath = "/data/data/asz.cdvexample/databases/mtdb";
-		 SQLiteOpenHelper  c=new SQLiteOpenHelper(this.webview.getContext(), myPath, null, 1){
-
-			@Override
-			public void onCreate(SQLiteDatabase db) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onUpgrade(SQLiteDatabase db, int oldVersion,
-					int newVersion) {
-				// TODO Auto-generated method stub
-				
-			}
-			 
-			 
-			 
-		 };
-		 
-		 
-		    c.getReadableDatabase();
-		
-		 
-	        SQLiteDatabase db = SQLiteDatabase.openDatabase(myPath, null,
-	                SQLiteDatabase.OPEN_READWRITE);
-	        db.beginTransaction();
-	       
-	      //  db.execSQL("");
-	        db.endTransaction();
-	        db.close();
-	        
-	        
-	 
-		
-		
-	}
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	private Double putCallBack(CallBack callback){
