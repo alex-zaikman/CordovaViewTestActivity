@@ -107,11 +107,12 @@ public class MainActivity extends Activity implements CordovaInterface{
 								
 
 								DataModle.the().cdv.getCookie( new CallBack(){
-
+									
 									@Override
 									public void call(String msg){
-										final String cookie = msg;
-										
+										//final String cookie = msg;
+										DataModle.the().cookie = msg;
+							
 								///get classes ---getStudyClassesOnSuccess
 								DataModle.the().cdv.getStudyClasses(new CallBack(){
 
@@ -146,12 +147,12 @@ public class MainActivity extends Activity implements CordovaInterface{
 															try {
 																HttpURLConnection connection;
 																connection = (HttpURLConnection) url.openConnection();
-																connection.setRequestProperty("Cookie", cookie);
+																connection.setRequestProperty("Cookie", DataModle.the().cookie);
 																connection.setDoInput(true);
 																connection.connect();	  
 
-																int code =  connection.getResponseCode();
-																LOG.d("asz",""+code);
+																//int code =  connection.getResponseCode();
+																//LOG.d("asz",""+code);
 
 																InputStream input = connection.getInputStream();
 

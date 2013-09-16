@@ -8,6 +8,8 @@ import t2k.asz.lib.model.ApiMT;
 
 public class DataModle {
 	
+	public  String cookie;
+	
 	private static final Object lock = new Object();
 	private static DataModle instance=null;
 	

@@ -1,9 +1,15 @@
 package t2k.asz.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.apache.cordova.api.LOG;
 import org.json.JSONException;
@@ -16,6 +22,7 @@ import t2k.asz.modle.DataModle;
 import t2k.asz.modle.OverviewBean;
 import t2k.asz.modle.OverviewBean.Item;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -37,16 +44,27 @@ public class LoActivity extends Activity {
 	String rawData;
 	List<Lo> los;
 	ArrayList<Seq> seqList;
+	String initData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+		StrictMode.setThreadPolicy(policy); 
+		
 		setContentView(R.layout.activity_lo);
 
 		lessonId = getIntent().getExtras().getString("lessonId");
 		courseId = getIntent().getExtras().getString("courseId");
 		Ccid = getIntent().getExtras().getString("Ccid");
 		rawData = getIntent().getExtras().getString("rawData");
+
+
+		this.initData = this.prepInitData();
+
+
 
 		Map<String,Object> rdata=null;
 		JSONObject json;
@@ -60,13 +78,79 @@ public class LoActivity extends Activity {
 
 		seqList = new ArrayList<Seq>();
 		@SuppressWarnings("unchecked")
-		final List<Object> learningObjects = (List<Object>) ((Map<String, Object>)rdata.get("data")).get("learningObjects");
+		List<Object> learningObjects = (List<Object>) ((Map<String, Object>)rdata.get("data")).get("learningObjects");
 
 		this.los = new ArrayList<Lo>();
-		this.prepLos(learningObjects);
-
-		final ListView lv = (ListView) findViewById(R.id.list);
+		try{
+			this.prepLos(learningObjects);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		final ListView lv = (ListView) findViewById(R.id.lolist);
 		lv.setAdapter(new LoAdapter(this,R.id.txtRow , this.seqList));
+	}
+
+	private String prepInitData() {
+		//media url
+		StringBuilder mediaUrl=new StringBuilder("");
+
+		mediaUrl.append("\"/cms/courses/");
+
+		mediaUrl.append(this.Ccid);
+
+		mediaUrl.append("\"");
+
+		//init data
+		StringBuilder initData= new StringBuilder("");
+
+		initData.append("{ width: 1024, height: 600, scale: 1, basePaths: { player:");
+
+		//this.playerPath
+		initData.append("\"/cms/player/dl\"");
+
+
+		initData.append(", media:");
+
+		initData.append(mediaUrl);
+
+		initData.append("}, complay:true, localeName:\"en_US\",   apiVersion: '1.0',  loId: 'inst_s', isLoggingEnabled: true, userInfo : { role: '");
+
+		initData.append("student");
+
+		initData.append("' }   }");
+
+		return initData.toString() ;
+
+	}
+
+	private static String prepPlayData(String ref) {
+
+		try {
+
+
+			String jsonUrl = "http://cto.timetoknow.com"  + ref ;
+
+
+			final URL url = new URL(jsonUrl);
+
+			HttpURLConnection connection;
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestProperty("Cookie", DataModle.the().cookie);
+			connection.setDoInput(true);
+			connection.connect();	 
+			Scanner s = new Scanner(connection.getInputStream());
+			
+			s.useDelimiter("\\Z");
+			String response = s.next();
+			
+			return response;
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -83,17 +167,23 @@ public class LoActivity extends Activity {
 
 			List<Map<String,Object>> rawSeqs = (List<Map<String,Object>>) ( (Map<String,Object>)learningObjects.get(i)).get("sequences");
 
-			for( Map<String,Object> rawSeq : rawSeqs){
+			if(rawSeqs!=null){
 
-				Seq seq =new Seq();
+				for( Map<String,Object> rawSeq : rawSeqs){
 
-				seq.stitle = (String) ( (Map<String,Object>)rawSeq).get("title"); 
-				seq.thumbnailHref=  (String) ( (Map<String,Object>)rawSeq).get("thumbnailHref"); 
-				seq.contentHref= (String) ( (Map<String,Object>)rawSeq).get("contentHref"); 
+					Seq seq =new Seq();
 
-				lo.seqs.add(seq);
 
-				this.seqList.add(seq);
+					seq.stitle = (String) ( (Map<String,Object>)rawSeq).get("title"); 
+					seq.thumbnailHref=  (String) ( (Map<String,Object>)rawSeq).get("thumbnailHRef"); 
+					seq.contentHref= (String) ( (Map<String,Object>)rawSeq).get("contentHRef"); 
+
+
+
+					lo.seqs.add(seq);
+
+					this.seqList.add(seq);
+				}
 			}
 
 			this.los.add(lo);
@@ -131,7 +221,7 @@ public class LoActivity extends Activity {
 		final Context context; 
 		final int layoutResourceId;
 		final ArrayList<Seq> seqs;
-		
+
 		public LoAdapter(Context context, int layoutResourceId ,ArrayList<Seq> seqs) {
 			super();
 			this.context=context;
@@ -157,6 +247,9 @@ public class LoActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
+			
+			final int index =position;
+
 			TextView row = (TextView) LayoutInflater.from(context)
 					.inflate(R.layout.table_row_simple, parent, false);
 
@@ -164,19 +257,21 @@ public class LoActivity extends Activity {
 			row.setText(seq.stitle); 
 
 			final String contentHref = seq.contentHref;
-			
+
 			OnClickListener l = new OnClickListener(){
 
 				@Override
 				public void onClick(View v) {
-					
 
-					//TODO
+
+					String playData = prepPlayData(contentHref);
+					String initData = 	((LoActivity)context).initData;
 					
-					
-					
+					intent
+
+
 				}
-				
+
 			};
 			row.setOnClickListener(l);
 
