@@ -60,6 +60,10 @@
             android:name="t2k.asz.controller.LoActivity"
             android:label="@string/title_activity_lo" >
         </activity>
+        <activity
+            android:name="t2k.asz.controller.DlActivity"
+            android:label="@string/title_activity_dl" >
+        </activity>
     </application>
 
 </manifest>
