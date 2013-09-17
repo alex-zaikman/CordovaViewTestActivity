@@ -216,7 +216,7 @@ public class LoActivity extends Activity {
 		String contentHref;
 	}
 
-	public static class LoAdapter extends BaseAdapter{
+	public  class LoAdapter extends BaseAdapter{
 
 		final Context context; 
 		final int layoutResourceId;
@@ -267,7 +267,10 @@ public class LoActivity extends Activity {
 					String playData = prepPlayData(contentHref);
 					String initData = 	((LoActivity)context).initData;
 					
-					intent
+					Intent intent = new Intent(getApplicationContext(), DlActivity.class);
+					intent.putExtra("playData", playData);
+					intent.putExtra("initData", initData);
+				    startActivity(intent);
 
 
 				}
