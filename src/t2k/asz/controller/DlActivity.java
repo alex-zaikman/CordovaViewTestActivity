@@ -17,8 +17,13 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class DlActivity extends Activity implements CordovaInterface{
 	
@@ -87,7 +92,13 @@ public class DlActivity extends Activity implements CordovaInterface{
 
 			webview.setWebViewClient(client);
 			
-			//TODO add the webview to layout
+			final LinearLayout ll = (LinearLayout) findViewById(R.id.dlLayout);
+			
+			webview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			
+			ll.addView(webview );
+			
+			
 	}
 
 	@Override
