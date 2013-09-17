@@ -1,7 +1,9 @@
 package t2k.asz.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,11 +51,11 @@ public class LoActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
 		StrictMode.setThreadPolicy(policy); 
-		
+
 		setContentView(R.layout.activity_lo);
 
 		lessonId = getIntent().getExtras().getString("lessonId");
@@ -138,11 +140,10 @@ public class LoActivity extends Activity {
 			connection.setRequestProperty("Cookie", DataModle.the().cookie);
 			connection.setDoInput(true);
 			connection.connect();	 
-			Scanner s = new Scanner(connection.getInputStream());
-			
-			s.useDelimiter("\\Z");
-			String response = s.next();
-			
+
+
+			String response = getStringFromInputStream(connection.getInputStream());
+
 			return response;
 
 		} catch (MalformedURLException e) {
@@ -247,7 +248,7 @@ public class LoActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			
+
 			final int index =position;
 
 			TextView row = (TextView) LayoutInflater.from(context)
@@ -266,11 +267,11 @@ public class LoActivity extends Activity {
 
 					String playData = prepPlayData(contentHref);
 					String initData = 	((LoActivity)context).initData;
-					
+
 					Intent intent = new Intent(getApplicationContext(), DlActivity.class);
 					intent.putExtra("playData", playData);
 					intent.putExtra("initData", initData);
-				    startActivity(intent);
+					startActivity(intent);
 
 
 				}
@@ -282,5 +283,39 @@ public class LoActivity extends Activity {
 			return row;
 		}
 	}
+
+
+
+	// convert InputStream to String
+	private static String getStringFromInputStream(InputStream is) {
+
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+
+		String line;
+		try {
+
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return sb.toString();
+
+	}
+
+
 
 }

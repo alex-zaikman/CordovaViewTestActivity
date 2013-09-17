@@ -45,7 +45,6 @@ public class ApiMT  {
 				
 				Log.d("JSI" , "onPageFinished loadded:"+url);
 				if( first ){
-					//CookieSyncManager.getInstance().sync();
 					first = false;
 					call.call("AOK");
 				}
@@ -67,23 +66,23 @@ public class ApiMT  {
 	
 	public void getCookie(CallBack success,CallBack faliure){
 		
-		jsi.execJS("getCookie", null, success, faliure);
+		jsi.execJSFunction("getCookie", null, success, faliure);
 	}
 	
 	
 	public void callOnLoadded(CallBack success,CallBack faliure){
-		jsi.execJS("callOnLoadded", null, success, faliure);
+		jsi.execJSFunction("callOnLoadded", null, success, faliure);
 	}
 	
 	
 	public void loadApi(CallBack success,CallBack faliure){
 		List<String> params= new ArrayList<String>();
 		params.add(comma("html5"));
-		jsi.execJS("T2K.api.load", params, success, faliure);
+		jsi.execJSFunction("T2K.api.load", params, success, faliure);
 	}
 
 	public void initApi(CallBack success,CallBack faliure){
-		jsi.execJS("T2K.server.initData", null, success, faliure);
+		jsi.execJSFunction("T2K.server.initData", null, success, faliure);
 	}
 
 	public void logIn(String username, String password, CallBack success,CallBack faliure){	
@@ -92,7 +91,7 @@ public class ApiMT  {
 		params.add(comma(username));
 		params.add(comma(password));
 
-		jsi.execJS("T2K.user.login", params, success, faliure);
+		jsi.execJSFunction("T2K.user.login", params, success, faliure);
 
 	}
 
@@ -118,11 +117,11 @@ public class ApiMT  {
 
 	public void logOut(CallBack success,CallBack faliure){
 
-		jsi.execJS("T2K.user.logout", null, success, faliure);
+		jsi.execJSFunction("T2K.user.logout", null, success, faliure);
 	}
 
 	public void getStudyClasses(CallBack success,CallBack faliure){
-		jsi.execJS( "T2K.user.getStudyClasses", null, success, faliure);
+		jsi.execJSFunction( "T2K.user.getStudyClasses", null, success, faliure);
 	}
 
 	public void getCourse(String cid , CallBack success,CallBack faliure){
@@ -131,7 +130,7 @@ public class ApiMT  {
 
 		params.add(cid);
 
-		jsi.execJS( "T2K.content.getCourseByClass", params, success, faliure);
+		jsi.execJSFunction( "T2K.content.getCourseByClass", params, success, faliure);
 	}
 
 	public void getLessonContent(String courseId, String lessonId , CallBack success,CallBack faliure){
@@ -141,13 +140,13 @@ public class ApiMT  {
 		params.add(comma(courseId));
 		params.add(comma(lessonId));
 					
-		jsi.execJS( "T2K.content.getLessonContent", params, success, faliure);
+		jsi.execJSFunction( "T2K.content.getLessonContent", params, success, faliure);
 	}
 
 	//======================================================================================================
 
 	public void testjs(String functionName , List<String> params , CallBack success,CallBack faliure){
-		jsi.execJS(functionName, params, success, faliure);
+		jsi.execJSFunction(functionName, params, success, faliure);
 	}
 	
 	public static String comma(String me){

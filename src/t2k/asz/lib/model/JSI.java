@@ -40,7 +40,6 @@ public class JSI {
 	
 	
 	
-	
 	public void execJSGetReturnedStringVal( String command ,CallBack callback){
 
 		Double d = putCallBack(callback);
@@ -53,7 +52,11 @@ public class JSI {
 		webview.loadUrl(jscommand);	
 	}
 
-	public void execJS(final String jsFuncName , List<String> params , CallBack success, CallBack faliure){
+	
+
+	
+	
+	public void execJSFunction(final String jsFuncName , List<String> params , CallBack success, CallBack faliure){
 
 
 		Double ds = putCallBack(success);
@@ -81,7 +84,20 @@ public class JSI {
 
 	}
 
-	
+	public String[] getCallBackFuncs(CallBack success, CallBack faliure){
+		
+		Double ds = putCallBack(success);
+		Double df = putCallBack(faliure);
+
+
+		String fsuccess = " function(msg){ window."+ this.namespace+".jsReturnVal( msg, '"+ ds + "' , '" +df+ "' );} ,";	
+
+		String ffaliure = " function(msg){ window."+this.namespace+".jsReturnVal( msg, '"+ df + "' , '" +ds+ "' );}";	
+
+		String ret[] = {fsuccess, ffaliure};
+		
+		return ret;
+	}
 
 	//============================================================================
 	@JavascriptInterface
