@@ -38,27 +38,39 @@ public class DlActivity extends Activity implements CordovaInterface{
 		final String playData = getIntent().getExtras().getString("playData");
 
 		final String[] params={initData,playData};
-		
-		
+
+
 		this.apidl = new ApiDl( "http://cto.timetoknow.com/cms/player/dl/index2a.html", new CallBack(params){
+
+
 
 			@Override
 			public void call(String msg){
 
+
+				apidl.callOnLoadded(new CallBack(){@Override
+					public void call(String msg){
+
 					apidl.initPlayer(this.params[0], new CallBack(this.params){
 
-					@Override
-					public void call(String msg){
-						
-						apidl.playSequence(this.params[1], new CallBack(){}, new CallBack(){});
-						
-						
-						
-					}}, new CallBack(){});
+						@Override
+						public void call(String msg){
+
+							apidl.playSequence(this.params[1], new CallBack(){}, new CallBack(){});
 
 
-				}
-			} , this);
+
+						}}, new CallBack(){});
+
+
+
+
+
+				}}, new CallBack(){});
+
+
+			}
+		} , this);
 
 
 		this.webview = this.apidl.getWebView();
@@ -72,63 +84,63 @@ public class DlActivity extends Activity implements CordovaInterface{
 
 
 
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.dl, menu);
+		return true;
+	}
+	@Override	
+	protected void onDestroy() {
+		super.onDestroy();
+		if (this.webview!= null) {
+			this.webview.loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
+			this.webview.loadUrl("about:blank");
+			((CordovaWebView)this.webview).handleDestroy();
 		}
+	}
 
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.dl, menu);
-			return true;
-		}
-		@Override	
-		protected void onDestroy() {
-			super.onDestroy();
-			if (this.webview!= null) {
-				this.webview.loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
-				this.webview.loadUrl("about:blank");
-				((CordovaWebView)this.webview).handleDestroy();
-			}
-		}
-
-		@Override
-		protected void onPause() {
-			super.onPause();
-
-		}
-
-		@Override
-		protected void onResume() {
-			super.onResume();
-
-		}
-
-		@Override
-		public Activity getActivity() {
-			return this;
-		}
-
-		@Override
-		public ExecutorService getThreadPool() {
-			return threadPool;
-		}
-
-		@Override
-		public Object onMessage(String message, Object obj) {
-
-			return null;
-		}
-
-		@Override
-		public void setActivityResultCallback(CordovaPlugin cordovaPlugin) {
-
-		}
-
-		@Override
-		public void startActivityForResult(CordovaPlugin cordovaPlugin,
-				Intent intent, int resultCode) {
-
-		}
-
-
+	@Override
+	protected void onPause() {
+		super.onPause();
 
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+	}
+
+	@Override
+	public Activity getActivity() {
+		return this;
+	}
+
+	@Override
+	public ExecutorService getThreadPool() {
+		return threadPool;
+	}
+
+	@Override
+	public Object onMessage(String message, Object obj) {
+
+		return null;
+	}
+
+	@Override
+	public void setActivityResultCallback(CordovaPlugin cordovaPlugin) {
+
+	}
+
+	@Override
+	public void startActivityForResult(CordovaPlugin cordovaPlugin,
+			Intent intent, int resultCode) {
+
+	}
+
+
+
+}

@@ -29,7 +29,7 @@ public class ApiDl  {
 	public ApiDl(String apiUrl, CallBack callbackOnLoadded, Activity activity){
 
 		final CallBack call = callbackOnLoadded;
-		jsi = new JSI(NAME_SPASE,call);
+		jsi = new JSI(NAME_SPASE);
 		CDVFactory.MConfig config = new CDVFactory.MConfig(); 
 		config.activity=activity;
 		config.url=apiUrl;
@@ -63,8 +63,9 @@ public class ApiDl  {
 		return this.webview;
 	}
 	
-	public void isLoadded(CallBack call){
-		jsi.execJSGetReturnedStringVal("isLoadded()", call);
+	
+	public void callOnLoadded(CallBack success,CallBack faliure){
+		jsi.execJSFunction("callOnLoadded", null, success, faliure);
 	}
 	
 	//-------------------------------------API-----------------------------------------------------------------
