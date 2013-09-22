@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.api.CordovaInterface;
 import org.apache.cordova.api.CordovaPlugin;
+import org.apache.cordova.api.LOG;
 
 import t2k.asz.lib.model.ApiDl;
 import t2k.asz.lib.model.util.CallBack;
@@ -21,8 +22,8 @@ public class DlActivity extends Activity implements CordovaInterface{
 
 	private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
-	public String initData="";
-	public String playData="";
+	//public String initData="";
+	//public String playData="";
 
 	WebView webview ;
 	ApiDl apidl;
@@ -33,20 +34,26 @@ public class DlActivity extends Activity implements CordovaInterface{
 		setContentView(R.layout.activity_dl);
 
 
-		initData =  getIntent().getExtras().getString("initData");
-		playData = getIntent().getExtras().getString("playData");
+		final String initData =  getIntent().getExtras().getString("initData");
+		final String playData = getIntent().getExtras().getString("playData");
 
-		this.apidl = new ApiDl( "http://cto.timetoknow.com/cms/player/dl/index2a.html", new CallBack(){
+		final String[] params={initData,playData};
+		
+		
+		this.apidl = new ApiDl( "http://cto.timetoknow.com/cms/player/dl/index2a.html", new CallBack(params){
 
 			@Override
 			public void call(String msg){
 
-				apidl.initPlayer(initData, new CallBack(){
+//				while(msg!="YES"){
+//				
+//				}
+					apidl.initPlayer(this.params[0], new CallBack(this.params){
 
 					@Override
 					public void call(String msg){
 						
-						apidl.playSequence(playData, new CallBack(){}, new CallBack(){});
+						apidl.playSequence(this.params[1], new CallBack(){}, new CallBack(){});
 						
 						
 						

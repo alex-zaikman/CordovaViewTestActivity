@@ -21,7 +21,7 @@ public class JSI {
 
 	WebView webview;
 	String namespace;
-	
+	CallBack callonloadded;
 	//=================API======================================================
 	
 	public JSI(WebView webview,String namespace){
@@ -33,6 +33,13 @@ public class JSI {
 		this.namespace = namespace;
 	}
 
+	
+	public JSI(String namespace, CallBack callonloadded){
+		this.namespace = namespace;
+		this.callonloadded=callonloadded;
+	}
+
+	
 	public void setWebview(WebView webview){
 		if(this.webview==null)
 			this.webview= webview;
@@ -51,8 +58,6 @@ public class JSI {
 		String jscommand="javascript:"+command;
 		webview.loadUrl(jscommand);	
 	}
-
-	
 
 	
 	
@@ -106,8 +111,14 @@ public class JSI {
 	msg+=msg;	
 	}
 
+	@JavascriptInterface
+	public void loadded(String msg){
+		
+	 if(callonloadded!=null) callonloadded.call(msg);
+	 
+	}
 
-	
+
 	@JavascriptInterface
 	public void jsReturnVal(String msg, String d ,String rem){
 

@@ -1,8 +1,6 @@
 package t2k.asz.lib.model;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.cordova.CordovaWebView;
@@ -31,7 +29,7 @@ public class ApiDl  {
 	public ApiDl(String apiUrl, CallBack callbackOnLoadded, Activity activity){
 
 		final CallBack call = callbackOnLoadded;
-		jsi = new JSI(NAME_SPASE);
+		jsi = new JSI(NAME_SPASE,call);
 		CDVFactory.MConfig config = new CDVFactory.MConfig(); 
 		config.activity=activity;
 		config.url=apiUrl;
@@ -42,16 +40,17 @@ public class ApiDl  {
 		
 		CordovaWebViewClient client =new IceCreamCordovaWebViewClient((CordovaInterface) config.activity,webview){
 
-			boolean first=true;
+		//	boolean first=true;
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 				
-				Log.d("JSI" , "onPageFinished loadded:"+url);
-				if( first ){
-					first = false;
-					call.call("AOK");
-				}
+//				Log.d("JSI" , "onPageFinished loadded:"+url);
+//				if( first ){
+//					first = false;
+//					
+//					
+//				}
 			}
 		};
 
@@ -62,6 +61,10 @@ public class ApiDl  {
 
 	public WebView getWebView(){
 		return this.webview;
+	}
+	
+	public void isLoadded(CallBack call){
+		jsi.execJSGetReturnedStringVal("isLoadded()", call);
 	}
 	
 	//-------------------------------------API-----------------------------------------------------------------
@@ -101,6 +104,7 @@ public class ApiDl  {
 	    
 	    
 		String command = createCommandForAction("playSequence",data.toString(),success, faliure);
+
 		jsi.execJS(command);
 	}
 	
