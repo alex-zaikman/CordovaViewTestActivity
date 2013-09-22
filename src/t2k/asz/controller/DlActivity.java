@@ -45,9 +45,6 @@ public class DlActivity extends Activity implements CordovaInterface{
 			@Override
 			public void call(String msg){
 
-//				while(msg!="YES"){
-//				
-//				}
 					apidl.initPlayer(this.params[0], new CallBack(this.params){
 
 					@Override
