@@ -55,19 +55,12 @@ public class DlActivity extends Activity implements CordovaInterface{
 
 						@Override
 						public void call(String msg){
-
+							
 							apidl.playSequence(this.params[1], new CallBack(){}, new CallBack(){});
-
-
-
+							
 						}}, new CallBack(){});
 
-
-
-
-
 				}}, new CallBack(){});
-
 
 			}
 		} , this);
