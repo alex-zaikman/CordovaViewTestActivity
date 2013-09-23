@@ -3,3 +3,7 @@
 *.dex
 
 *.apk
+
+*.cache
+
+*.ap_
