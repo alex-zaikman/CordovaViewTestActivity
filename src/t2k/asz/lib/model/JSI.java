@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.cordova.api.LOG;
+
 import t2k.asz.lib.model.util.CallBack;
+import t2k.asz.lib.model.util.DlCallBack;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -22,8 +25,9 @@ public class JSI {
 	WebView webview;
 	String namespace;
 	CallBack callonloadded;
+	DlCallBack dlcallback=null;
 	//=================API======================================================
-	
+
 	public JSI(WebView webview,String namespace){
 		this.namespace=namespace;
 		this.webview=webview;
@@ -33,20 +37,20 @@ public class JSI {
 		this.namespace = namespace;
 	}
 
-	
+
 	public JSI(String namespace, CallBack callonloadded){
 		this.namespace = namespace;
 		this.callonloadded=callonloadded;
 	}
 
-	
+
 	public void setWebview(WebView webview){
 		if(this.webview==null)
 			this.webview= webview;
 	}
-	
-	
-	
+
+
+
 	public void execJSGetReturnedStringVal( String command ,CallBack callback){
 
 		Double d = putCallBack(callback);
@@ -59,19 +63,16 @@ public class JSI {
 		webview.loadUrl(jscommand);	
 	}
 
-	
-	
-	public void execJSFunction(final String jsFuncName , List<String> params , CallBack success, CallBack faliure){
 
+
+	public void execJSFunction(final String jsFuncName , List<String> params , CallBack success, CallBack faliure){
 
 		Double ds = putCallBack(success);
 		Double df = putCallBack(faliure);
 
-
 		String fsuccess = " function(msg){ window."+ this.namespace+".jsReturnVal( JSON.stringify(msg), '"+ ds + "' , '" +df+ "' );} ,";	
 
 		String ffaliure = " function(msg){ window."+this.namespace+".jsReturnVal( JSON.stringify(msg), '"+ df + "' , '" +ds+ "' );}";	
-
 
 		String jparams="";	
 
@@ -81,47 +82,46 @@ public class JSI {
 			}
 		}
 
-		
+
 		String jscommand="javascript:try{ "+jsFuncName+"(" +jparams + fsuccess + ffaliure+ ");   }catch(err){ window."+this.namespace+".jsReturnVal(  err.message , '"+ df + "' , '" +ds+ "' ); }" ;
-		
+
 		webview.loadUrl(jscommand);
-		
 
 	}
 
 	public String[] getCallBackFuncs(CallBack success, CallBack faliure){
-		
+
 		Double ds = putCallBack(success);
 		Double df = putCallBack(faliure);
-
 
 		String fsuccess = " function(msg){ window."+ this.namespace+".jsReturnVal( msg, '"+ ds + "' , '" +df+ "' );} ,";	
 
 		String ffaliure = " function(msg){ window."+this.namespace+".jsReturnVal( msg, '"+ df + "' , '" +ds+ "' );}";	
 
 		String ret[] = {fsuccess, ffaliure};
-		
+
 		return ret;
 	}
 
 	//============================================================================
 	@JavascriptInterface
 	public void echo(String msg){
-		
-	msg+=msg;	
+		LOG.d("asz",msg);
 	}
 
 	@JavascriptInterface
 	public void loadded(String msg){
-		
-	 if(callonloadded!=null) callonloadded.call(msg);
-	 
+		if(callonloadded!=null) callonloadded.call(msg);
+	}
+
+	@JavascriptInterface
+	public void dlCallBackApi(String msg){
+		if(dlcallback!=null) dlcallback.call(msg);
 	}
 
 
 	@JavascriptInterface
 	public void jsReturnVal(String msg, String d ,String rem){
-
 		this.callbacks.remove(Double.parseDouble(rem));
 		this.callbacks.get(Double.parseDouble(d)).call(msg);
 		this.callbacks.remove(Double.parseDouble(d));
@@ -130,16 +130,10 @@ public class JSI {
 	@JavascriptInterface
 	public void jsReturnVal(String msg, String d){
 		CallBack cb = this.callbacks.get(Double.parseDouble(d));
-
 		cb.call(msg);
-
-
 		this.callbacks.remove(Double.parseDouble(d));
 	}
 
-	
-	
-	
 	private Double putCallBack(CallBack callback){
 
 		if(callback ==null) return null;
@@ -151,6 +145,10 @@ public class JSI {
 		this.callbacks.put(d, callback);
 
 		return d;
+	}
+
+	public void setDlCallBack(DlCallBack dlcallback) {
+		this.dlcallback=dlcallback;
 	}
 
 }

@@ -11,7 +11,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import t2k.asz.lib.model.util.CallBack;
+import t2k.asz.lib.model.util.DlCallBack;
 import t2k.asz.lib.model.util.JsonHelper;
+import t2k.asz.modle.DlCallBackImpl;
 import android.app.Activity;
 import android.util.Log;
 //import android.webkit.CookieSyncManager;
@@ -24,12 +26,14 @@ public class ApiDl  {
 	private JSI jsi=null;
 	CordovaWebView webview=null;
 	public final String NAME_SPASE = "ASZNSPDL";
-
+	DlCallBack dlcallback;
 
 	public ApiDl(String apiUrl, CallBack callbackOnLoadded, Activity activity){
 
 		final CallBack call = callbackOnLoadded;
 		jsi = new JSI(NAME_SPASE);
+		dlcallback = new DlCallBackImpl();
+		jsi.setDlCallBack(dlcallback);
 		CDVFactory.MConfig config = new CDVFactory.MConfig(); 
 		config.activity=activity;
 		config.url=apiUrl;
@@ -45,11 +49,10 @@ public class ApiDl  {
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 				
-//				Log.d("JSI" , "onPageFinished loadded:"+url);
 				if( first ){
 					first = false;
+					jsi.execJS(" window.dlapicall = function(res){  "+NAME_SPASE+".dlCallBackApi(JSON.stringify(res)); };");
 					call.call("aok");
-//					
 				}
 			}
 		};
@@ -70,13 +73,10 @@ public class ApiDl  {
 	
 	//-------------------------------------API-----------------------------------------------------------------
 
-	
-	
 
 	public void initPlayer(String initData , CallBack success,CallBack faliure){
 		String command = createCommandForAction("init",initData,success, faliure);
 		jsi.execJS(command);
-
 	}
 
 	public void playSequence(String seqData , CallBack success,CallBack faliure){
