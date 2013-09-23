@@ -40,17 +40,17 @@ public class ApiDl  {
 		
 		CordovaWebViewClient client =new IceCreamCordovaWebViewClient((CordovaInterface) config.activity,webview){
 
-		//	boolean first=true;
+			boolean first=true;
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 				
 //				Log.d("JSI" , "onPageFinished loadded:"+url);
-//				if( first ){
-//					first = false;
+				if( first ){
+					first = false;
+					call.call("aok");
 //					
-//					
-//				}
+				}
 			}
 		};
 
