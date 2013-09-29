@@ -8,6 +8,7 @@ import org.apache.cordova.api.CordovaInterface;
 import org.apache.cordova.api.CordovaPlugin;
 
 import t2k.asz.lib.model.ApiDl;
+import t2k.asz.lib.model.DlObjectCreatorImpl;
 import t2k.asz.lib.model.util.CallBack;
 import android.app.Activity;
 import android.content.Intent;
@@ -26,7 +27,8 @@ public class DlActivity extends Activity implements CordovaInterface{
 
 	WebView webview ;
 	ApiDl apidl;
-
+	DlObjectCreatorImpl creator;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,33 +38,36 @@ public class DlActivity extends Activity implements CordovaInterface{
 		final String initData =  getIntent().getExtras().getString("initData");
 		final String playData = getIntent().getExtras().getString("playData");
 
-		final String[] params={initData,playData};
+		final String[][] params={{initData,playData}};
 
+		creator = new DlObjectCreatorImpl("http://cto.timetoknow.com/cms/player/dl/index2a.html",params,this);
+		
+		this.apidl = (ApiDl) creator.createObjectForIndex(0);
 
-		this.apidl = new ApiDl( "http://cto.timetoknow.com/cms/player/dl/index2a.html", new CallBack(params){
-
-
-
-			@Override
-			public void call(String msg){
-
-
-				apidl.callOnLoadded(new CallBack(params){@Override
-					public void call(String msg){
-
-					apidl.initPlayer(this.params[0], new CallBack(this.params){
-
-						@Override
-						public void call(String msg){
-							
-							apidl.playSequence(this.params[1], new CallBack(){}, new CallBack(){});
-							
-						}}, new CallBack(){});
-
-				}}, new CallBack(){});
-
-			}
-		} , this);
+//		this.apidl = new ApiDl( "http://cto.timetoknow.com/cms/player/dl/index2a.html", new CallBack(params){
+//
+//
+//
+//			@Override
+//			public void call(String msg){
+//
+//
+//				apidl.callOnLoadded(new CallBack(params){@Override
+//					public void call(String msg){
+//
+//					apidl.initPlayer(this.params[0], new CallBack(this.params){
+//
+//						@Override
+//						public void call(String msg){
+//							
+//							apidl.playSequence(this.params[1], new CallBack(){}, new CallBack(){});
+//							
+//						}}, new CallBack(){});
+//
+//				}}, new CallBack(){});
+//
+//			}
+//		} , this);
 
 
 		this.webview = this.apidl.getWebView();
