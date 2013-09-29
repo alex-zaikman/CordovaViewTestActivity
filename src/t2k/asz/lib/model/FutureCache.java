@@ -42,7 +42,7 @@ public class FutureCache {
 
 			int ri=-1;
 			if((ri = cacheIndex.get(abi, -1)) == -1){
-				tmpcache[rj]=creator.createForIndex(abi);
+				tmpcache[rj]=creator.createObjectForIndex(abi);
 			}else{
 				tmpcache[rj]=cache[ri];
 			}
@@ -69,7 +69,7 @@ public class FutureCache {
 		if((ri=cacheIndex.get(absoluteIndex, -1)) != -1){
 			ret = cache[ri];
 		}else{		
-			ret = creator.createForIndex(absoluteIndex);
+			ret = creator.createObjectForIndex(absoluteIndex);
 		}
 
 		if(repopulate) 
@@ -81,17 +81,17 @@ public class FutureCache {
 
 	//---------------------------------------------public API---------------------------------------------------------------
 
-	public Object getForIndex(int absoluteIndex){
+	public Object objectForIndex(int absoluteIndex){
 		Object ret = null;
 
-		if(creator.canCreateFor(absoluteIndex)){
+		if(creator.canCreateObjectFor(absoluteIndex)){
 			ret = getForIndex(absoluteIndex,true);
 		}
 
 		return ret;
 	}
 
-	public Object getForIndex(List<Integer> absoluteIndexs){
+	public Object objectForIndex(List<Integer> absoluteIndexs){
 
 		List<Object> ret = new ArrayList<Object>();
 
@@ -119,9 +119,9 @@ public class FutureCache {
 
 	public static interface CacheObjectCreator{
 
-		public Object createForIndex(int absoluteIndexs);
+		public Object createObjectForIndex(int absoluteIndexs);
 
-		public boolean canCreateFor(int absoluteIndexs);
+		public boolean canCreateObjectFor(int absoluteIndexs);
 
 	}
 

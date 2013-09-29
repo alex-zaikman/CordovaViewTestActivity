@@ -18,7 +18,7 @@ public class DlObjectCreatorImpl implements CacheObjectCreator {
 	}
 
 	@Override
-	public Object createForIndex(int absoluteIndexs) {
+	public Object createObjectForIndex(int absoluteIndexs) {
 
 		if (ipdata.length < absoluteIndexs+1)
 			return null;
@@ -51,7 +51,7 @@ public class DlObjectCreatorImpl implements CacheObjectCreator {
 	}
 
 	@Override
-	public boolean canCreateFor(int absoluteIndexs){
+	public boolean canCreateObjectFor(int absoluteIndexs){
 		return (absoluteIndexs>-1 && absoluteIndexs < this.ipdata.length );
 	}
 }
