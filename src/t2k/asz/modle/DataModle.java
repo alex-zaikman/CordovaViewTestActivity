@@ -16,6 +16,7 @@ public class DataModle {
 	public Map<String,Object> mdata;
 	public List<?> ldata;
 	public Object raw;
+	@SuppressWarnings("rawtypes")
 	public List rawList;
 	
 	private DataModle(){

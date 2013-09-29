@@ -15,8 +15,6 @@ import t2k.asz.lib.model.util.DlCallBack;
 import t2k.asz.lib.model.util.JsonHelper;
 import t2k.asz.modle.DlCallBackImpl;
 import android.app.Activity;
-import android.util.Log;
-//import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
 

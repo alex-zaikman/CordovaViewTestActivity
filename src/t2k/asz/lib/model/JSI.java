@@ -10,9 +10,6 @@ import org.apache.cordova.api.LOG;
 
 import t2k.asz.lib.model.util.CallBack;
 import t2k.asz.lib.model.util.DlCallBack;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 

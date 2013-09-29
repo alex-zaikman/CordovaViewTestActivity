@@ -35,7 +35,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -339,7 +338,8 @@ public class InAppBrowser extends CordovaPlugin {
                 return value;
             }
 
-            public void run() {
+            @SuppressWarnings("deprecation")
+			public void run() {
                 // Let's create the main dialog
                 dialog = new Dialog(cordova.getActivity(), android.R.style.Theme_NoTitleBar);
                 dialog.getWindow().getAttributes().windowAnimations = android.R.style.Animation_Dialog;

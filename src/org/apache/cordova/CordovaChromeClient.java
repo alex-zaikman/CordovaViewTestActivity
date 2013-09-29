@@ -51,7 +51,7 @@ import android.widget.RelativeLayout;
 public class CordovaChromeClient extends WebChromeClient {
 
     public static final int FILECHOOSER_RESULTCODE = 5173;
-    private static final String LOG_TAG = "CordovaChromeClient";
+  //  private static final String LOG_TAG = "CordovaChromeClient";
     private String TAG = "CordovaLog";
     private long MAX_QUOTA = 100 * 1024 * 1024;
     private CordovaInterface cordova;

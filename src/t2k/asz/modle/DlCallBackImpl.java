@@ -13,7 +13,7 @@ public class DlCallBackImpl extends DlCallBack {
 	@Override
 	public void api(Map<String, Object> config) {
 		
-		LOG.d("asz","config");
+		LOG.d("asz","DlCallBackImpl<-api<-config: "+config.toString());
 		
 		// TODO Auto-generated method stub
 

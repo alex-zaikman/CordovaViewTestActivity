@@ -11,29 +11,22 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
-import org.apache.cordova.api.LOG;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import t2k.asz.controller.OverviewActivity.OverviewAdapter;
-import t2k.asz.lib.model.util.CallBack;
 import t2k.asz.lib.model.util.JsonHelper;
 import t2k.asz.modle.DataModle;
-import t2k.asz.modle.OverviewBean;
-import t2k.asz.modle.OverviewBean.Item;
-import android.os.Bundle;
-import android.os.StrictMode;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -247,9 +240,6 @@ public class LoActivity extends Activity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-
-
-			final int index =position;
 
 			TextView row = (TextView) LayoutInflater.from(context)
 					.inflate(R.layout.table_row_simple, parent, false);

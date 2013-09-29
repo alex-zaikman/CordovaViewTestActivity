@@ -896,7 +896,7 @@ public class ContactAccessorSdk5 extends ContactAccessor {
             photo.put("id", cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo._ID)));
             photo.put("pref", false);
             photo.put("type", "url");
-            Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, (new Long(contactId)));
+            Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, (Long.valueOf(contactId)));
             Uri photoUri = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
             photo.put("value", photoUri.toString());
         } catch (JSONException e) {
@@ -971,7 +971,7 @@ public class ContactAccessorSdk5 extends ContactAccessor {
     private String modifyContact(String id, JSONObject contact, String accountType, String accountName) {
         // Get the RAW_CONTACT_ID which is needed to insert new values in an already existing contact.
         // But not needed to update existing values.
-        int rawId = (new Integer(getJsonString(contact, "rawId"))).intValue();
+        int rawId = (Integer.valueOf(getJsonString(contact, "rawId"))).intValue();
 
         // Create a list of attributes to add to the contact database
         ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();

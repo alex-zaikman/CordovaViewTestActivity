@@ -54,6 +54,7 @@ public class OverviewBean {
 	private void parceStructure(Item root ,  Map<String, Object> data){
 
 	
+		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> tocItems = (List<Map<String, Object>>) data.get("tocItems");
 
 		for (Map<String, Object>  tocitem : tocItems){
@@ -77,6 +78,7 @@ public class OverviewBean {
 		}
 
 
+		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> items = (List<Map<String, Object>>) data.get("items");
 
 		for (Map<String, Object>  item : items){

@@ -1,27 +1,21 @@
 package t2k.asz.controller;
 
 import org.apache.cordova.api.LOG;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import t2k.asz.lib.model.util.CallBack;
-import t2k.asz.lib.model.util.JsonHelper;
 import t2k.asz.modle.DataModle;
 import t2k.asz.modle.OverviewBean;
 import t2k.asz.modle.OverviewBean.Item;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,13 +44,6 @@ public class OverviewActivity extends Activity {
 		//	getMenuInflater().inflate(R.menu.overview, menu);
 		return true;
 	}
-
-
-
-
-
-
-
 
 
 
@@ -135,7 +122,7 @@ public class OverviewActivity extends Activity {
 						}, new CallBack(){ @Override public void call(String msg){
 							
 							
-							LOG.d("asz",msg);
+							//LOG.d("asz",msg);
 							
 						}});
 

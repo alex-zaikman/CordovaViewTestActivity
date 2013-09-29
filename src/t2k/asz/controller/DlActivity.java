@@ -6,7 +6,6 @@ import java.util.concurrent.Executors;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.api.CordovaInterface;
 import org.apache.cordova.api.CordovaPlugin;
-import org.apache.cordova.api.LOG;
 
 import t2k.asz.lib.model.ApiDl;
 import t2k.asz.lib.model.util.CallBack;

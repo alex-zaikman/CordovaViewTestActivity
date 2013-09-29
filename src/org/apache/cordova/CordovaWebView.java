@@ -23,7 +23,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Stack;
 
 import org.apache.cordova.Config;
 import org.apache.cordova.api.CordovaInterface;
