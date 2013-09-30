@@ -40,7 +40,8 @@ public class LoActivity extends Activity {
 	List<Lo> los;
 	ArrayList<Seq> seqList;
 	String initData;
-
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +52,7 @@ public class LoActivity extends Activity {
 
 		setContentView(R.layout.activity_lo);
 
+		
 		lessonId = getIntent().getExtras().getString("lessonId");
 		courseId = getIntent().getExtras().getString("courseId");
 		Ccid = getIntent().getExtras().getString("Ccid");
@@ -83,6 +85,27 @@ public class LoActivity extends Activity {
 		}
 		final ListView lv = (ListView) findViewById(R.id.lolist);
 		lv.setAdapter(new LoAdapter(this,R.id.txtRow , this.seqList));
+		
+		
+		
+		//======
+		
+		String[][] listOfData = new String[this.seqList.size()][2];
+		String initData = 	this.initData;
+		
+		for(int index = 0 ; index < this.seqList.size() ;index++){
+			Seq current = (Seq)this.seqList.get(index);
+			
+			String playData = prepPlayData(current.contentHref);
+			
+			listOfData[index][0] = initData;
+			listOfData[index][1] = playData;
+			
+		}
+		
+		DataModle.the().raw = listOfData;
+		
+		//==========
 	}
 
 	private String prepInitData() {
@@ -248,19 +271,28 @@ public class LoActivity extends Activity {
 			row.setText(seq.stitle); 
 
 			final String contentHref = seq.contentHref;
-
+			final int pp=position;
+			
 			OnClickListener l = new OnClickListener(){
 
 				@Override
 				public void onClick(View v) {
 
 
-					String playData = prepPlayData(contentHref);
-					String initData = 	((LoActivity)context).initData;
+					
+					
+					
+					
+					//String playData = prepPlayData(contentHref);
+					//String initData = 	((LoActivity)context).initData;
 
+					String[] data = ((String[][]) DataModle.the().raw)[pp];
+					
+					
 					Intent intent = new Intent(getApplicationContext(), DlActivity.class);
-					intent.putExtra("playData", playData);
-					intent.putExtra("initData", initData);
+					intent.putExtra("playData", data[1]);
+					intent.putExtra("initData", data[0]);
+		
 					startActivity(intent);
 
 

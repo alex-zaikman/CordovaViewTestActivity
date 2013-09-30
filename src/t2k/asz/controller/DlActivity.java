@@ -22,8 +22,6 @@ public class DlActivity extends Activity implements CordovaInterface{
 
 	private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
-	//public String initData="";
-	//public String playData="";
 
 	WebView webview ;
 	ApiDl apidl;
