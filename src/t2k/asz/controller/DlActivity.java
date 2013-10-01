@@ -9,13 +9,19 @@ import org.apache.cordova.api.CordovaPlugin;
 
 import t2k.asz.lib.model.ApiDl;
 import t2k.asz.lib.model.DlObjectCreatorImpl;
+import t2k.asz.lib.model.FutureCache;
 import t2k.asz.lib.model.util.CallBack;
+import t2k.asz.modle.DataModle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 
 public class DlActivity extends Activity implements CordovaInterface{
@@ -23,60 +29,96 @@ public class DlActivity extends Activity implements CordovaInterface{
 	private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
 
-	WebView webview ;
-	ApiDl apidl;
+	static WebView webview ;
+	static ApiDl apidl;
 	DlObjectCreatorImpl creator;
-	
+	int currentPosition=0;
+	FutureCache cache;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dl);
 
 
-		final String initData =  getIntent().getExtras().getString("initData");
-		final String playData = getIntent().getExtras().getString("playData");
+		//final String initData =  getIntent().getExtras().getString("initData");
+		//final String playData = getIntent().getExtras().getString("playData");
+		currentPosition = getIntent().getExtras().getInt("position");
 
-		final String[][] params={{initData,playData}};
+		final String[][] params =(String[][]) DataModle.the().raw;  //{{initData,playData}};
 
 		creator = new DlObjectCreatorImpl("http://cto.timetoknow.com/cms/player/dl/index2a.html",params,this);
-		
-		this.apidl = (ApiDl) creator.createObjectForIndex(0);
 
-//		this.apidl = new ApiDl( "http://cto.timetoknow.com/cms/player/dl/index2a.html", new CallBack(params){
-//
-//
-//
-//			@Override
-//			public void call(String msg){
-//
-//
-//				apidl.callOnLoadded(new CallBack(params){@Override
-//					public void call(String msg){
-//
-//					apidl.initPlayer(this.params[0], new CallBack(this.params){
-//
-//						@Override
-//						public void call(String msg){
-//							
-//							apidl.playSequence(this.params[1], new CallBack(){}, new CallBack(){});
-//							
-//						}}, new CallBack(){});
-//
-//				}}, new CallBack(){});
-//
-//			}
-//		} , this);
+		cache = new FutureCache(2, 2, currentPosition, creator);
 
+		apidl = (ApiDl) cache.objectForIndex(currentPosition);
 
-		this.webview = this.apidl.getWebView();
+		webview = apidl.getWebView();
 
-
-		final LinearLayout ll = (LinearLayout) findViewById(R.id.dlLayout);
+		LinearLayout ll = (LinearLayout) findViewById(R.id.dlLayout);
 
 		webview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		ll.addView(webview );
 
+
+
+		final Button nextbtn = (Button)findViewById(R.id.next);
+		OnClickListener ln= new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+
+				LinearLayout ll = (LinearLayout) findViewById(R.id.dlLayout);
+
+				ApiDl tapidl = (ApiDl) cache.objectForIndex(++currentPosition);
+
+				if(tapidl!=null){
+
+					ll.removeAllViews();
+					
+					apidl = tapidl;
+
+					webview = apidl.getWebView();
+
+					webview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
+					ll.addView(webview);
+
+					
+				}
+			}
+
+		};
+		nextbtn.setOnClickListener(ln);
+
+
+		final Button prevbtn = (Button)findViewById(R.id.prev);
+		OnClickListener lp= new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				
+				LinearLayout ll = (LinearLayout) findViewById(R.id.dlLayout);
+
+				ApiDl tapidl = (ApiDl) cache.objectForIndex(--currentPosition);
+
+				if(tapidl!=null){
+					
+					ll.removeAllViews();
+					
+					apidl=tapidl;
+					
+					webview = apidl.getWebView();
+
+					webview.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
+					ll.addView(webview);
+				}
+			}
+
+		};
+		prevbtn.setOnClickListener(lp);
 
 
 	}
@@ -90,11 +132,11 @@ public class DlActivity extends Activity implements CordovaInterface{
 	@Override	
 	protected void onDestroy() {
 		super.onDestroy();
-		if (this.webview!= null) {
-			this.webview.loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
-			this.webview.loadUrl("about:blank");
-			((CordovaWebView)this.webview).handleDestroy();
-		}
+//		if (webview!= null) {
+//			webview.loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
+//			webview.loadUrl("about:blank");
+//			((CordovaWebView)webview).handleDestroy();
+//		}
 	}
 
 	@Override

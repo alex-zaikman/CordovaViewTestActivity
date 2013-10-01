@@ -292,7 +292,7 @@ public class LoActivity extends Activity {
 					Intent intent = new Intent(getApplicationContext(), DlActivity.class);
 					intent.putExtra("playData", data[1]);
 					intent.putExtra("initData", data[0]);
-		
+					intent.putExtra("position", pp);
 					startActivity(intent);
 
 
